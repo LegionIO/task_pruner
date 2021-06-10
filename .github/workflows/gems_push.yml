@@ -5,6 +5,13 @@ on:
       - main
       - master
     types: [closed]
+  workflow_dispatch:
+  registry_package:
+    types: [ published ]
+  release:
+    types: [published]
+
+
 
 jobs:
   build:
