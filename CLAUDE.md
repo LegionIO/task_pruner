@@ -35,7 +35,7 @@ No explicit actors directory - the framework auto-generates a subscription actor
 ## Runner Details
 
 **`find_expired(age: 31, limit: 1000, status: ['task.completed'], **)`**
-Deletes task records older than `age` days. Defaults to `task.completed` status, but accepts `'*'` or `nil` to skip status filtering. Uses `DATE_SUB(SYSDATE(), INTERVAL N DAY)`. Runs in batches up to `limit`.
+Deletes task records older than `age` days. Uses `DATE_SUB(SYSDATE(), INTERVAL N DAY)`. Runs in batches up to `limit`. Note: the status filter (`dataset.where(status: status)`) does not reassign `dataset`, so the status filter is currently not applied - all records older than `age` days are deleted regardless of status.
 
 **`delete_task(task_id:, **)`**
 Stub - currently empty.

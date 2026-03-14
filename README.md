@@ -22,7 +22,7 @@ gem install lex-task_pruner
 |-----------|---------|-------------|
 | `age` | `31` | Delete tasks older than this many days |
 | `limit` | `1000` | Maximum records to delete per run |
-| `status` | `['task.completed']` | Status filter. Pass `'*'` or `nil` to delete regardless of status |
+| `status` | `['task.completed']` | Status filter (currently not applied due to a bug - all records older than `age` days are deleted) |
 
 ## Requirements
 
