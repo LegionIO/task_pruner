@@ -10,7 +10,7 @@ Legion Extension that prunes old task history records from the LegionIO database
 
 **GitHub**: https://github.com/LegionIO/task_pruner
 **License**: MIT
-**Version**: 0.1.0
+**Version**: 0.1.1
 
 ## Architecture
 
@@ -19,8 +19,8 @@ Legion::Extensions::TaskPruner
 └── Runners/
     └── Prune              # Task cleanup logic (no explicit actor - auto-generated subscription)
         ├── find_expired   # Delete tasks older than N days (default: 31), limited batch size
-        ├── delete_task    # Delete a specific task by task_id (stub)
-        └── expire_queued  # Query tasks stuck in queued statuses (stub - does not delete)
+        ├── delete_task    # Delete a specific task by task_id
+        └── expire_queued  # Mark stuck queued tasks as task.expired
 ```
 
 No explicit actors directory - the framework auto-generates a subscription actor for the Prune runner.
@@ -35,13 +35,13 @@ No explicit actors directory - the framework auto-generates a subscription actor
 ## Runner Details
 
 **`find_expired(age: 31, limit: 1000, status: ['task.completed'], **)`**
-Deletes task records older than `age` days. Uses `DATE_SUB(SYSDATE(), INTERVAL N DAY)`. Runs in batches up to `limit`. Note: the status filter (`dataset.where(status: status)`) does not reassign `dataset`, so the status filter is currently not applied - all records older than `age` days are deleted regardless of status.
+Deletes task records older than `age` days using `Sequel.lit('created <= ?', cutoff)` for cross-DB compatibility. Runs in batches up to `limit`. Status filter is applied unless `status` is `'*'`, `nil`, or empty string.
 
 **`delete_task(task_id:, **)`**
-Stub - currently empty.
+Deletes a specific task by primary key. Returns `{ success: false, error: 'task not found' }` if missing.
 
 **`expire_queued(age: 1, limit: 10, **)`**
-Queries tasks stuck in `conditioner.queued`, `transformer.queued`, or `task.queued` status. Currently assigns the dataset but does not delete (incomplete implementation).
+Finds tasks stuck in `conditioner.queued`, `transformer.queued`, or `task.queued` status older than `age` days and updates their status to `task.expired`.
 
 ## Dependencies
 
@@ -56,6 +56,8 @@ bundle install
 bundle exec rspec
 bundle exec rubocop
 ```
+
+Spec count: 14 examples
 
 ---
 
