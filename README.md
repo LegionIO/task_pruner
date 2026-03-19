@@ -12,7 +12,7 @@ gem install lex-task_pruner
 
 - **find_expired** - Delete completed tasks older than N days (default: 31 days, batch size: 1000)
 - **delete_task** - Delete a specific task by ID
-- **expire_queued** - Query tasks stuck in queued statuses (conditioner.queued, transformer.queued, task.queued)
+- **expire_queued** - Find tasks stuck in queued statuses and update them to `task.expired`
 
 ## Configuration
 
@@ -22,7 +22,16 @@ gem install lex-task_pruner
 |-----------|---------|-------------|
 | `age` | `31` | Delete tasks older than this many days |
 | `limit` | `1000` | Maximum records to delete per run |
-| `status` | `['task.completed']` | Status filter (currently not applied due to a bug - all records older than `age` days are deleted) |
+| `status` | `['task.completed']` | Status filter; pass `'*'`, `nil`, or `''` to delete all statuses |
+
+`expire_queued` accepts:
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `age` | `1` | Find tasks stuck longer than this many days |
+| `limit` | `10` | Maximum records to update per run |
+
+Affected statuses for `expire_queued`: `conditioner.queued`, `transformer.queued`, `task.queued`.
 
 ## Requirements
 
