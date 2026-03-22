@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.2] - 2026-03-22
+
+### Changed
+- Updated `legion-data` dependency constraint to `>= 1.4.15`
+
 ## [0.1.1] - 2026-03-18
 
 ### Fixed

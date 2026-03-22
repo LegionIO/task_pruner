@@ -29,5 +29,5 @@ Gem::Specification.new do |spec|
     'rubygems_mfa_required' => 'true'
   }
 
-  spec.add_dependency 'legion-data'
+  spec.add_dependency 'legion-data', '>= 1.4.15'
 end
