@@ -10,7 +10,7 @@ Legion Extension that prunes old task history records from the LegionIO database
 
 **GitHub**: https://github.com/LegionIO/task_pruner
 **License**: MIT
-**Version**: 0.1.1
+**Version**: 0.1.2
 
 ## Architecture
 
